@@ -5,7 +5,8 @@ import os
 import cv2
 
 final_vis_dir = './records/test/final_vis'
-predicted_graph_dir = './records/test/graph'
+# predicted_graph_dir = './records/test/graph'
+predicted_graph_dir = './records/test/skeleton'
 
 def visualize():
     image_list = os.listdir(predicted_graph_dir)

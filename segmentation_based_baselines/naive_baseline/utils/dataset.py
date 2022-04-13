@@ -55,13 +55,13 @@ class BasicDataset(Dataset):
     def __getitem__(self, i):
         idx = self.ids[i]
         img_file = os.path.join(self.imgs_dir, idx + '.tiff')
-        mask_file = os.path.join(self.masks_dir, idx + '.png')
+        # mask_file = os.path.join(self.masks_dir, idx + '.png')
         img = Image.open(img_file)
-        mask = Image.open(mask_file)
+        # mask = Image.open(mask_file)
         img = self.preprocess(img,False)
-        mask = self.preprocess(mask,True)
+        # mask = self.preprocess(mask,True)
         return {
             'image': torch.from_numpy(img).type(torch.FloatTensor),
-            'mask': torch.from_numpy(mask).type(torch.FloatTensor),
+            # 'mask': torch.from_numpy(mask).type(torch.FloatTensor),
             'name':idx
         }

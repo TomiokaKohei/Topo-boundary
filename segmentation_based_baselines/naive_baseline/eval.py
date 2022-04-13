@@ -14,9 +14,10 @@ def eval_net(args,net,loader, device):
     tot = 0
     with tqdm(total=n_val, desc='Validation' if not args.test else 'Testing', unit='img', leave=False) as pbar:
         for batch in loader:
-            img, mask, name = batch['image'], batch['mask'],batch['name']
+            # img, mask, name = batch['image'], batch['mask'],batch['name']
+            img, name = batch['image'], batch['name']
             img = img.to(device=device, dtype=torch.float32)
-            mask = mask.to(device=device, dtype=torch.float32)
+            # mask = mask.to(device=device, dtype=torch.float32)
             with torch.no_grad():
                 mask_pred = net(img)
                 mask_save = torch.sigmoid(mask_pred).squeeze(0).squeeze(0).cpu().detach().numpy()
