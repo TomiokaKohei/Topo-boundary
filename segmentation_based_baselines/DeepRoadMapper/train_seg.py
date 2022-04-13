@@ -55,7 +55,7 @@ class valid_dataset(Dataset):
             self.file_list = json_list['test']
             
         self.tiff_list = [os.path.join(args.image_dir,'{}.tiff'.format(x)) for x in self.file_list]
-        self.mask_list = [os.path.join(args.mask_dir,'{}.png'.format(x)) for x in self.file_list]
+        # self.mask_list = [os.path.join(args.mask_dir,'{}.png'.format(x)) for x in self.file_list]
         if args.mode == 'train':
             print('Finish loading the valid data set lists {}!'.format(len(self.file_list)))
         else:
@@ -66,9 +66,10 @@ class valid_dataset(Dataset):
 
     def __getitem__(self,idx):
         tiff = tvf.to_tensor(Image.open(self.tiff_list[idx]))
-        mask = tvf.to_tensor(Image.open(self.mask_list[idx]))
+        # mask = tvf.to_tensor(Image.open(self.mask_list[idx]))
         name = self.file_list[idx]
-        return tiff,mask,name 
+        # return tiff,mask,name 
+        return tiff,name 
 
 def collate_fn(batch):
     batch = list(filter(lambda x: x is not None, batch))
@@ -126,8 +127,10 @@ def val(args,epoch,net,dataloader,ii,val_len,writer,mode=0):
     f1_ave = 0
     with tqdm(total=val_len, desc='Validation' if args.mode=='train' else args.mode, unit='img') as pbar:
         for idx,data in enumerate(dataloader):
-            img, mask, name = data
-            img, mask = img.to(args.device), mask[0,0,:,:].cpu().detach().numpy()
+            # img, mask, name = data
+            # img, mask = img.to(args.device), mask[0,0,:,:].cpu().detach().numpy()
+            img, name = data
+            img = img.to(args.device)
             with torch.no_grad():
                 pre_segs = net(img)
                 pre_segs = torch.sigmoid(pre_segs).cpu().detach().numpy()[0,0]
@@ -182,11 +185,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     device = args.device
     # load data
-    train_dataset = dataset(args)
+    # train_dataset = dataset(args)
     valid_dataset = valid_dataset(args)
-    train_dataloader = DataLoader(train_dataset,batch_size=args.batch_size,shuffle=True,collate_fn=collate_fn)
+    # train_dataloader = DataLoader(train_dataset,batch_size=args.batch_size,shuffle=True,collate_fn=collate_fn)
     valid_dataloader = DataLoader(valid_dataset,batch_size=1,shuffle=False)
-    train_len = len(train_dataloader)
+    # train_len = len(train_dataloader)
     valid_len = len(valid_dataloader)
     # network
     net = UNet(n_channels=4,n_classes=1,bilinear=True)

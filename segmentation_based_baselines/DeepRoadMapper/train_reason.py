@@ -185,12 +185,12 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     device = args.device
     # load data
-    train_dataset = dataset()
-    valid_dataset = valid_dataset()
-    train_dataloader = DataLoader(train_dataset,batch_size=args.batch_size,shuffle=True,collate_fn=collate_fn)
-    valid_dataloader = DataLoader(valid_dataset,batch_size=1,shuffle=False)
-    train_len = len(train_dataloader)
-    valid_len = len(valid_dataloader)
+    # train_dataset = dataset()
+    # valid_dataset = valid_dataset()
+    # train_dataloader = DataLoader(train_dataset,batch_size=args.batch_size,shuffle=True,collate_fn=collate_fn)
+    # valid_dataloader = DataLoader(valid_dataset,batch_size=1,shuffle=False)
+    # train_len = len(train_dataloader)
+    # valid_len = len(valid_dataloader)
     # network
     net = ReasonNet()
     if args.load_checkpoint is not None and args.mode=='test':
